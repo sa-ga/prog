@@ -1,0 +1,11 @@
+.wrapper{
+    width: 500px;
+    margin: auto;
+}
+
+.oya-list{
+    width: 1140px;
+    display: flex;
+    /* flex-wrap: wrap; */
+}
+

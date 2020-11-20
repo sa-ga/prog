@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>チーズアカデミーTOKYO</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="Your Name のPortfolio Siteです。">
+		<meta property="og:title" content="Your Name Portfolio Site">
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="#">
+		<meta property="og:image" content="images/common/ogimage.png">
+		<meta property="og:site_name" content="Your Name Portfolio Site">
+		<meta property="og:description" content="Your Name のPortfolio Siteです。">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="apple-touch-icon" href="images/common/touch-icon.png">
+		<link rel="shortcut icon" href="images/common/favicon.ico">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<div class="hero-image">
+			<img src="images/header/hero_img.jpg" alt="チーズの画像">
+			<p class="hero-image__text">Hello,World!!</p>
+		</div>
+		<header class="header">
+			<div class="wrapper header-wrapper">
+				<h1 class="site-title page-title">Your Name Portfolio Web</h1>
+				<nav>
+					<div class="wrapper">
+						<ul class="nav-list">
+							<li class="nav-item"><a href="#about">About</a></li>
+							<li class="nav-item"><a href="#works">Works</a></li>
+							<li class="nav-item"><a href="#contact">Contact</a></li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</header>
+		<main>
+			<!-- about -->
+			<section id="about" class="profile">
+				<div class="profile-wrapper">
+					<h2 class="text-center profile__title">About Me</h2>
+					<div class="text-center profile__eyecatch"><img src="images/about/about_01.jpg" alt="コスゲタツヤのスタンプ画像"></div>
+					
+					<h3 class="text-center profile__name">Your Name is</h3>
+					<p class="profile__text">Webサイトなどの制作業を中心に、Webデザインなどを教えるスクールで講師業を
+						行うなど、活動分野は多岐に渡る。最近では、Webメディアへの記事執筆・寄稿など
+						ライターとしての活動も行っている。趣味は旅と写真・ゲストハウス巡りで、仕事や
+						プライベートを問わず日本全国様々な場所に足を運び、分野を越えた交流を楽しん
+						でいる。
+					</p>
+				</div>
+			</section>
+			<!-- //about -->
+			<!-- works -->
+			<section id="works" class="works">
+				<div class="wrapper">
+					<h2 class="works__title text-center">Works</h2>
+					<ul class="works__list">
+						<li class="works__item one">
+							<div class="works__eyecatch">
+								<img src="images/about/about_02.jpg" alt="オリジナルイラスト年賀状の画像">
+							</div>
+							<div class="works__contents">
+								<h3 class="works__heading">オリジナルイラスト年賀状を作成しました！</h3>
+								<p>2018/02/06</p>
+							</div>
+						</li>
+						<li class="works__item two">
+							<div class="works__eyecatch">
+								<img src="images/about/about_03.jpg" alt="マッサージ院のWebサイトのキャプチャ画像">
+							</div>
+							<div class="works__contents">
+								<h3 class="works__heading">マッサージ院のWebサイトを作成しました！</h3>
+								<p>2018/01/01</p>
+							</div>
+						</li>
+						<li class="works__item three">
+							<div class="works__eyecatch">
+								<img src="images/about/about_04.jpg" alt="自作ブログのキャプチャ画像">
+							</div>
+							<div class="works__contents">
+								<h3 class="works__heading">自ら運営するブログのデザインから構築まで一通り担当し、作成しました！</h3>
+								<p>2018/01/01</p>
+							</div>
+						</li>
+						<li class="works__item four">
+							<div class="works__eyecatch">
+								<img src="images/about/about_01.jpg" alt="自作ブログのキャプチャ画像">
+							</div>
+							<div class="works__contents">
+								<h3 class="works__heading">自ら運営するブログのデザインから構築まで一通り担当し、作成しました！</h3>
+								<p>2018/01/01</p>
+							</div>
+						</li>
+					</ul>
+					<a href="#" target="_blank" class="btn text-center">作品集をもっと見る</a>
+				</div>
+			</section>
+			<!-- //works -->
+			<!-- contact -->
+			<section id="contact" class="contact">
+				<div class="form-wrapper">
+					<h2 class="contact__title text-center">Contact</h2>
+
+					<form action="#" method="POST">
+						<dl class="form-inner">
+							<dt class="form-title">お名前</dt>
+							<dd class="form-item"><input type="text" name="name" class="form-parts"></dd>
+							<dt class="form-title">メールアドレス</dt>
+							<dd class="form-item"><input type="email" name="email" class="form-parts"></dd>
+							<dt class="form-title check-radio">お問い合わせ内容</dt>
+							<dd class="form-item">
+								<label for="making" class="form-label"><input type="radio" name="kind" id="making" value="製作のご依頼">製作のご依頼</label>
+								<label for="event" class="form-label"><input type="radio" name="kind" id="event" value="イベント出演依頼">イベント出演依頼</label>
+								<label for="other" class="form-label"><input type="radio" name="kind" id="other" value="その他">その他</label>
+							</dd>
+							<dt class="form-title">お問い合わせ詳細</dt>
+							<dd class="form-item">
+								<textarea name="detail" id="" cols="30" rows="10" class="form-parts"></textarea>
+							</dd>
+						</dl>
+						<input type="submit" value="送信" class="btn btn-submit">
+					</form>
+				</div>
+			</section>
+			<!-- //contact -->
+		</main>
+		<!-- footer -->
+		<footer class="footer">
+			<div class="wrapper">
+				<a href="#" class="btn-pagetop"><span class="fa fa-angle-up icon-up"></span></a>
+				<small class="copyrights">copyrights 2017-2018 Your Name All Rights Reserved.</small>
+			</div>
+		</footer>
+		<!-- //footer -->
+	</body>
+</html>

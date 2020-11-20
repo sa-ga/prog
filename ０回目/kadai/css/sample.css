@@ -1,0 +1,92 @@
+body{
+    margin:0;
+    padding:0;
+    text-align:left;
+    font-size: 10px;
+}
+header{
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+main{
+    border-bottom:1px solid #ccc;
+}
+footer{
+    background-color: #fff;
+    border-bottom:1px solid #ccc;
+    text-align: center;
+}
+p{
+    font-size:100%;
+    text-align: center;
+    border-bottom:1px solid #fff;
+    height:100%;
+}
+ul{
+    padding: 0;
+    border-top: 1px solid #000000;
+    display:table;  /* 定義 */
+    table-layout: fixed;
+    width:100%;
+}
+li{
+    text-align: center;
+    list-style-type:none;
+    border: 1px solid #666;
+    background-color: #FFF;
+    display:table-cell;  /* 定義 */
+    cursor: pointer;
+}
+li:hover{
+    background: #0066CC;
+    color:#fff;
+}
+
+/* 画像 */
+li{
+    background:
+    linear-gradient(
+      90deg,
+      rgba(208, 147, 82, 0.6),
+      rgba(192, 134, 70, 0.6) 60%,
+      rgba(208, 147, 82, 0.6)
+    ),
+    repeating-radial-gradient(
+      ellipse at 60% 500%,
+      #c08646,
+      #c08646 0.2%,
+      #d09352 0.6%,
+      #d09352 1%
+    );
+}
+
+#judgment {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#drink{
+    margin-left: 80px;
+    margin-right: 0px;
+}
+
+#drink img{
+    height: 50%;
+    width: 50%;
+}
+
+.itasan_kotoba{
+    font-size: 150%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.itasan{
+    display: flex;
+    justify-content: center;
+}
+
+.maguro_hint{
+    display: none;
+}

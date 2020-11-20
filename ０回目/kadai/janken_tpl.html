@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>へいらっしゃい</title>
+</head>
+<body>
+
+<header>
+  <!-- <h1>じゃんけん</h1> -->
+  <div class="itasan">
+    <div class="itasan_kotoba"><p>へいらっしゃい。<br>どれかにワサビが入っているよ。</p></div>
+    <div><img src="img/itasan.png" alt="板前さんの画像"></div>
+    <div id="drink">
+      <div id="agari">
+        <img src="img/agari.png" alt="あがりの画像">
+        <p>↑もう一丁↑<br>クリック</p>
+      </div>
+      <div id="sake">
+        <img src="img/ochoko.png" alt="ビールの画像">
+        <p>↑ヒント↑<br>クリック</p>
+      </div>
+  </div>
+    <div id="judgment"><img src="img/aiko.png" alt="信長ノーマルの画像"></div>
+  </div>
+</header>
+
+<main>
+  <ul>
+    <li id="gu_btn"><img src="img/maguro.png" alt="マグロ鮨"></li>
+    <li id="maguro_hint_1" class="maguro_hint"><img src="img/maguro_hint.png" alt="マグロ鮨のヒント"></li>
+    <li id="cho_btn"><img src="img/maguro.png" alt="マグロ鮨"></li>
+    <li id="maguro_hint_2" class="maguro_hint"><img src="img/maguro_hint.png" alt="マグロ鮨のヒント"></li>
+    <li id="par_btn"><img src="img/maguro.png" alt="マグロ鮨"></li>
+    <li id="maguro_hint_3" class="maguro_hint"><img src="img/maguro_hint.png" alt="マグロ鮨のヒント"></li>
+  </ul>
+</main>
+
+<footer></footer>
+<script>
+let valJanken = -1;
+
+//画面読み込み
+$(window).on("load",function(){
+  valJanken = click_janken();
+})
+
+//シャッフル
+$("#agari").on("click",function(){
+  valJanken = click_janken();
+});
+
+//ヒント
+$("#sake").on("click",function(){
+
+  let tmpBtnName = "";
+  let tmpHintName = "";
+
+  if(valJanken == 1) {
+    tmpBtnName = "#gu_btn";
+    tmpHintName = "#maguro_hint_1";
+  } else if(valJanken == 2) {
+    tmpBtnName = "#cho_btn";
+    tmpHintName = "#maguro_hint_2";
+  } else {
+    tmpBtnName = "#par_btn";
+    tmpHintName = "#maguro_hint_3";
+  }
+
+  $(tmpBtnName).css("display","none");
+  $(tmpHintName).fadeIn(1000).fadeOut(1000);
+  setTimeout(() => {
+    $(tmpBtnName).css("display","block");
+  }, 2000);
+});
+
+//プレイヤーがグーの場合
+$("#gu_btn").on("click",function(){
+    let valBtn = 1;
+    let valJudgment = judgment_janken(valBtn,valJanken);
+
+    $("#judgment").html(valJudgment);
+});
+
+//プレイヤーがチョキの場合
+$("#cho_btn").on("click",function(){
+
+    let valBtn = 2;
+    let valJudgment = judgment_janken(valBtn,valJanken);
+
+    $("#judgment").html(valJudgment);
+});
+
+//プレイヤーがパーの場合
+$("#par_btn").on("click",function(){
+
+  let valBtn = 3;
+  let valJudgment = judgment_janken(valBtn,valJanken);
+
+  $("#judgment").html(valJudgment);
+});
+
+//勝敗を判定
+function judgment_janken(valBtn,valJanken){
+
+  let resultJudgment = "";
+
+  //あいこの場合
+  if(valBtn == valJanken){
+    resultJudgment = '<img src="img/NG.png">';
+  } else {
+    resultJudgment = '<img src="img/OK.png">';
+  }
+
+  return resultJudgment
+}
+
+//コンピュータの出した手を判定
+function click_janken(){
+  let resultJanken = Math.ceil(Math.random()*3); //小数点0.x～0.9999...
+  $("#judgment").html('<img src="img/aiko.png">');
+
+  return resultJanken
+}
+</script>
+</body>
+</html>
