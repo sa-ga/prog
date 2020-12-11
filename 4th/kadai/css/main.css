@@ -1,0 +1,42 @@
+canvas, video{
+    border: 1px solid gray;
+  }
+
+ul{
+    list-style: none;
+    padding-inline-start: inherit;
+}
+
+.img__items{
+    display: flex;
+    justify-content: center;
+}
+
+#shutter{
+    display: block;
+    width: 100%;
+    height: 150px;
+    font-size:100px;
+}
+
+#icons{
+    display: none;
+}
+/* #picture{
+    display: none;
+    height: 150px;
+} */
+
+.btn{
+    display: none;
+    width: 100%;
+    height: 150px;
+    font-size:100px;
+}
+
+.btn2{
+    display: block;
+    width: 100%;
+    height: 150px;
+    font-size:100px;
+}

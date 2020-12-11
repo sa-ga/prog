@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOU'RE日記（WEB）</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="output" width="100%" height="auto"></div>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- JQuery -->
+
+    <!--** 以下Firebase **-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+        apiKey: "AIzaSyBgEtvOFIVWjpbniPImqV2U9imz9XatzrM",
+        authDomain: "unit1-46890.firebaseapp.com",
+        projectId: "unit1-46890",
+        storageBucket: "unit1-46890.appspot.com",
+        messagingSenderId: "161948244058",
+        appId: "1:161948244058:web:a2dc9924deb016aacaa063"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const ref = firebase.database().ref();    //ref("/useritem/")の中にディレクトリ構造を格とそのデータ構造で保存できる
+
+        //アイコン処理
+        let icon = 0;
+        const img = ["buke.png","tuku.jpg","caram.png"];
+
+        //受信イベント
+        ref.on("child_added",function(data){
+            const v = data.val(); //dataオブジェクトの中のDataを取得
+            const k = data.key;   //KEYを取得（削除に必要らしい）
+            const h = '<dl id="'+k+'"><dt><img src="imgs/'+img[v.icon]+'" width="50">'+v.dates+'</dt><dd>'+'<img src="'+v.c64+'" width="250px" height="auto">'+'</dd></dl>';
+            
+            $("#output").append(h);   //一番下に挿入
+            
+            //最新メッセージを表示
+            const obt = document.getElementById("output");
+            obt.scrollTop = obt.scrollHeight;
+        });
+
+    </script>
+    
+</body>
+</html>

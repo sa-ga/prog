@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>YOU'RE日記（スマホ）</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+
+    </style>
+</head>
+<body>
+  <!-- コンテンツ表示画面 -->
+    <!-- カメラ箇所 -->
+    <video id="camera" width="100%" height="auto"></video>
+    
+    <form>
+      <input type="button" value="シャッター" id="shutter">
+    </form>
+  
+    <div id="c_picture" width="100%" height="auto"><canvas id="picture" height="725px"></canvas></div>
+    
+    <audio id="se" preload="auto">
+      <source src="camera-shutter1.mp3" type="audio/mp3">
+    </audio>
+    <input type="button" onclick='scrollWindow("camera");' value="やり直し" class="btn">
+
+    <!-- //カメラ箇所 -->
+    <ul id="icons">
+      <div class="img__items">
+        <div><li class="imgs" data-img="0"><img src="imgs/buke.png" width="300"></li></div>
+        <div><li class="imgs" data-img="1"><img src="imgs/tuku.jpg" width="300"></li></div>
+        <div><li class="imgs" data-img="2"><img src="imgs/caram.png" width="300"></li></div>
+      </div>
+    </ul>
+    <input type="button" value="送信" id="send" class="btn">
+  </div>
+  <!--/ コンテンツ表示画面 -->
+
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- JQuery -->
+
+  <!--** 以下Firebase **-->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBgEtvOFIVWjpbniPImqV2U9imz9XatzrM",
+      authDomain: "unit1-46890.firebaseapp.com",
+      projectId: "unit1-46890",
+      storageBucket: "unit1-46890.appspot.com",
+      messagingSenderId: "161948244058",
+      appId: "1:161948244058:web:a2dc9924deb016aacaa063"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const ref = firebase.database().ref();    //ref("/useritem/")の中にディレクトリ構造を格とそのデータ構造で保存できる
+
+    const c_send   = document.querySelector('#send');
+    const btn_sub = document.querySelector('.btn');
+
+    //アイコン処理
+    let icon = 0;
+    const img = ["buke.png","tuku.jpg","caram.png"];
+    $(".imgs").on("click",function(){
+        icon = $(this).attr("data-img");
+        c_send.style.display = "block";
+        btn_sub.style.display = "none";
+        
+    });
+
+    let sendFlag = 0;
+    //送信イベント２
+    $("#send").on("click",function(){
+
+      if(sendFlag == 0){
+        const c64 = canvas.toDataURL("image/jpeg");
+        const uname = $("#uname").val();
+        const text = $("#text").val();
+        const d = new Date();
+
+        const Year = d.getFullYear();
+        const Month = d.getMonth()+1;
+        const ddd = d.getDate();
+        const Hour = d.getHours();
+        const Min = d.getMinutes();
+        const Sec = d.getSeconds();
+        const dates = Year + "年" + Month + "月" + ddd + "日" + Hour + ":" + Min + ":" + Sec;
+
+        const msg = {
+          c64: c64,
+          icon: icon,
+          dates: dates
+        };
+        ref.push(msg);    //サーバにPush
+
+        sendFlag = 1;
+        $("#send").val("もう一度");
+      }else{
+        c_send.style.display = "none";
+        $("#send").val("送　信");
+        sendFlag = 0;
+        scrollWindow("camera");
+      } 
+    });
+
+    //カメラ処理
+    const video   = document.querySelector("#camera");
+    const canvas  = document.querySelector("#picture");
+    const shtr    = document.querySelector("#shutter");
+    const se      = document.querySelector('#se');
+    const icons__items = document.querySelector('#icons');
+    const c_pic   = document.querySelector('#c_picture');
+
+    $(function () {
+      sizing();
+      $(window).resize(function() {
+          sizing();
+      });
+    });
+
+    function sizing(){
+      $("#picture").attr({width:$("#c_picture").width()});
+    }
+
+    /** カメラ設定 */
+    const constraints = {
+      audio: false,
+      video: {
+        facingMode: "user"   // フロントカメラを利用する
+      }
+    };
+
+    /**
+    * カメラを<video>と同期
+    */
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then( (stream) => {
+      video.srcObject = stream;
+      video.onloadedmetadata = (e) => {
+        video.play();
+      };
+    })
+    .catch( (err) => {
+      console.log(err.name + ": " + err.message);
+    });
+
+    canvas.width = video.width;
+
+    /**
+    * シャッターボタン
+    */
+    document.querySelector("#shutter").addEventListener("click", () => {
+      const ctx = canvas.getContext("2d");
+
+      // 演出的な目的で一度映像を止めてSEを再生する
+      video.pause();  // 映像を停止
+      se.play();      // シャッター音
+      setTimeout( () => {
+        video.play();    // 0.5秒後にカメラ再開
+      }, 500);
+
+      // canvasに画像を貼り付ける
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      scrollWindow("picture");
+      video.style.display = "none";
+      shtr.style.display = "none";
+      canvas.style.display = "block";
+      btn_sub.style.display = "block";
+      icons__items.style.display = "block";
+    });
+
+    //スクロール
+    function scrollWindow(elem) {
+      // let element = $("#picture");
+      let element = document.getElementById(elem);
+
+      if(elem == "camera"){
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        video.style.display = "block";
+        shtr.style.display = "block";
+        canvas.style.display = "none";
+        btn_sub.style.display = "none";
+        icons__items.style.display = "none";
+      }
+
+      let rect = element.getBoundingClientRect();
+      let elemtop = rect.top + window.pageYOffset;
+      document.documentElement.scrollTop = elemtop;
+    }
+
+    canvas.style.display = "none";
+
+  </script>
+</body>
+</html>
