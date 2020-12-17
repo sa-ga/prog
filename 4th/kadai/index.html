@@ -1,0 +1,251 @@
+<!DOCTYPE html lang="ja">
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>ましのPortFolio</title>
+    <meta name="descripton" content="PortFolio of masi" />
+    <link rel="stylesheet" href="css/base.css" />
+  </head>
+
+  <body>
+    <!-- This website includes the work that is distributed in the Apache License 2.0-->
+    <div id="canvas">
+      <div id="flipbook">
+        <div id="test" class="change hard own-size"></div>
+        <div id="output">
+        </div>
+      </div>
+    </div>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/lib/turn.js"></script>
+    <script src="js/lib/hash.js"></script>
+    <script src="js/portfolio.js"></script>
+    <script>
+      let windowSize = $(window).width();
+      function isDouble() {
+        windowSize = $(window).width();
+        if (windowSize >= 1488) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      function changeClassToMobile() {
+          $(".change")
+            .removeClass("hard")
+            .removeClass("own-size")
+            .removeClass("fixed");
+      }
+      function deleteDescription() {
+        $(".delete").remove();
+      }
+      function loadApp() {
+          if (!isDouble()) {
+          deleteDescription();
+        }
+        if (windowSize <= 1488) {
+          $("#forMobile").append(
+            "<p>*モバイル向けの簡易表示です。PCでの閲覧をおすすめします。</p>"
+          );
+        }
+        if (windowSize <= 1488) {
+          changeClassToMobile();
+        }
+        let flipbook = $("#flipbook");
+        let mode = "double";
+        if (isDouble()) {
+          mode = "double";
+        } else {
+          mode = "single";
+        }
+        if (flipbook.width() == 0 || flipbook.height() == 0) {
+          setTimeout(loadApp, 10);
+          return;
+        }
+
+        flipbook.turn({
+          pages: 10,
+          elevation: 50,
+          duration: 1000,
+          autoCenter: true,
+          display: mode,
+
+          when: {
+            turning: function (e, page, view) {
+              let book = $(this),
+                currentPage = book.turn("page"),
+                pages = book.turn("pages");
+
+              if (currentPage > 3 && currentPage < pages - 3) {
+                if (page == 1) {
+                  book.turn("page", 2).turn("stop").turn("page", page);
+                  e.preventDefault();
+                  return;
+                } else if (page == pages) {
+                  book
+                    .turn("page", pages - 1)
+                    .turn("stop")
+                    .turn("page", page);
+                  e.preentDefault();
+                  return;
+                }
+              } else if (page > 3 && page < pages - 3) {
+                if (currentPage == 1) {
+                  book
+                    .turn("page", pages - 1)
+                    .turn("stop")
+                    .turn("page", page);
+                  e.preventDefault();
+                  return;
+                }
+              }
+
+              if (page >= 2) $("#flipbook .p2").addClass("fixed");
+              else $("#flipbook .p2").removeClass("fixed");
+
+              if (page < book.turn("pages"))
+                $("#flipbook .p9").addClass("fixed");
+              else $("#flipbook .p9").removeClass("fixed");
+
+              if (page != 1 && page != book.turn("pages"))
+                $(" #flipbook .tabs").fadeIn(500);
+              else $(" #flipbook .tabs").hide();
+            },
+            turned: function (e, page, view) {
+              let book = $(this);
+              if (page != 1 && page != book.turn("pages"))
+                $(" #flipbook .tabs").fadeIn(500);
+              else $(" #flipbook .tabs").hide();
+
+              book.turn("center");
+              if (isDouble()) {
+                updateTabs();
+              }
+            },
+          },
+        });
+
+        Hash.on("^page\/([0-9]*)$", {
+          yep: function (path, parts) {
+            let page = parts[1];
+
+            if (page !== undefined) {
+              if ($(" #flipbook").turn("is"))
+                $(" #flipbook").turn("page", page);
+            }
+          },
+          nop: function (path) {
+            if ($(" #flipbook").turn("is")) $(" #flipbook").turn("page", 1);
+          },
+        });
+      }
+
+      loadApp(); //とりあえず読み込み
+
+      //画面の大きさが変わった時に再読み込みする(reload以外の方法を試したがうまくいかなかった)
+      $(window).resize(function () {
+        if (windowSize>1488 && $(window).width() <= 1488) {
+          windowSize=$(window).width();
+          location.reload()
+        }else if(windowSize<=1488 && $(window).width() >1488){
+           windowSize = $(window).width();
+          location.reload()
+        }
+      });
+    </script>
+
+    <!--** 以下Firebase **-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+        apiKey: "AIzaSyBgEtvOFIVWjpbniPImqV2U9imz9XatzrM",
+        authDomain: "unit1-46890.firebaseapp.com",
+        projectId: "unit1-46890",
+        storageBucket: "unit1-46890.appspot.com",
+        messagingSenderId: "161948244058",
+        appId: "1:161948244058:web:a2dc9924deb016aacaa063"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const ref = firebase.database().ref();    //ref("/useritem/")の中にディレクトリ構造を格とそのデータ構造で保存できる
+
+        //アイコン処理
+        let icon = 0;
+        const img = ["buke.png","tuku.jpg","caram.png"];
+
+        //受信イベント
+        // ref.on("child_added",function(data){
+        //     const v = data.val(); //dataオブジェクトの中のDataを取得
+        //     const k = data.key;   //KEYを取得（削除に必要らしい）
+        //     // const h = '<dl id="'+k+'"><dt><img src="img/'+img[v.icon]+'" width="50">'+v.dates+'</dt><dd>'+'<img src="'+v.c64+'" width="250px" height="auto">'+'</dd></dl>';
+        //     const data__date = v.dates;
+        //     const data__temp = v.temperature + "℃";
+        //     const img__main = '<img src="'+v.c64+'" width="50">';
+        //     const img__whtr = '<img src="'+v.c64whether+'" width="50">';
+        //     const img__param = '<img src="img/'+img[v.icon]+'" width="50">';
+
+        //     $("#id__date").append(data__date);
+        //     $("#id__tmpr").append(data__temp);
+        //     $("#id__whtr").append(img__whtr);
+        //     $("#output").append(img__main);
+        //     $("#id__param").append(img__param);
+        // });
+
+
+
+         //受信イベント
+         ref.on("child_added",function(data){
+            const v = data.val(); //dataオブジェクトの中のDataを取得
+            const k = data.key;   //KEYを取得（削除に必要らしい）
+            // const h = '<dl id="'+k+'"><dt><img src="img/'+img[v.icon]+'" width="50">'+v.dates+'</dt><dd>'+'<img src="'+v.c64+'" width="250px" height="auto">'+'</dd></dl>';
+            const data__date = v.dates;
+            const data__temp = v.temperature + "℃";
+            const img__main = '<img src="'+v.c64+'" width="100%">';
+            const img__whtr = '<img src="'+v.c64whether+'" width="50">';
+            const img__param = '<img src="img/'+img[v.icon]+'" width="50">';
+
+            // let column__first = '<div class="icon">'+img__main+'</div>';
+            let column__first = '<div>';
+            column__first += img__main;  
+            column__first += '<h1 style="text-align: center;">'+data__date+'</h1>';
+            column__first += '<table><tbody>';
+            column__first += '<tr>';
+            column__first += '<th>'+img__whtr+'</th>';
+            column__first += '<td>'+data__temp+'</td>';
+            column__first += '</tr>';
+            column__first += '<tr>';
+            column__first += '<th>'+img__param+'</th>';
+            column__first += '<td></td>';
+            column__first += '</tr>';
+            column__first += '</tbody></table>';
+            column__first += '</div>';
+
+            console.log(column__first);
+
+            $("#output").append(column__first);
+            // $("body").append(column__first);
+            // $("#flipbook").append(column__first);
+
+            // $("body").append("<p>あいうえお</p>");
+
+            // $("#id__date").append(data__date);
+            // $("#id__tmpr").append(data__temp);
+            // $("#id__whtr").append(img__whtr);
+            // $("#output").append(img__main);
+            // $("#id__param").append(img__param);
+        });
+
+    </script>
+  </body>
+</html>

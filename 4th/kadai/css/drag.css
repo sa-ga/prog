@@ -1,0 +1,14 @@
+#test_box {
+    background-color:#39C;
+    color: #FFF;
+    text-align: center;
+    padding: 30px;
+    position: absolute;
+    cursor: default;
+    width: 80px;
+    border-radius: 10px;
+}
+body {
+    margin-left: 0px;
+    margin-top: 0px;
+}
