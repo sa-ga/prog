@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Map:Geolocation</title>
+<style>html,body{height:100%;}body{padding:0;margin:0;}h1{padding:0;margin:0;font-size:50%;}</style>
+</head>
+<body>
+
+<!-- MAP[START] -->
+<h1>Map:Geolocation</h1>
+<div id="myMap" style='width:60%;height:70%;float:left;'></div>
+<!-- MAP[END] -->
+
+<script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AlbECJizxXijp_5-GasOQKtvW2QtJSSwGtJFjZsrQsTXX9hKO76I2vjvw7hnlk1Q' async defer></script>
+<script src="js/BmapQuery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //****************************************************************************************
+    // BingMaps&BmapQuery
+    //****************************************************************************************
+    //Init
+    function GetMap(){
+        //------------------------------------------------------------------------
+        //1. Instance
+        //------------------------------------------------------------------------
+        const map = new Bmap("#myMap");
+
+        //------------------------------------------------------------------------
+        //2. geolocation: Display Map
+        //   map.geolocation(function(data:object){...});
+        //------------------------------------------------------------------------
+        map.geolocation(function(data) {
+            //location
+            const lat = 43.204070;
+            const lon = 141.759900;
+            //Map
+            map.startMap(lat, lon, "load", 16);
+
+            const datas = {
+                // keyid:$("#key").val(),
+                keyid:"038f6f8e68e9225b023567d121181dd3",
+                latitude:lat,
+                longitude:lon,
+                range:5,
+                hit_per_page:50
+            };
+            //Ajax（非同期通信）
+            axios.get('https://api.gnavi.co.jp/RestSearchAPI/v3/', {
+                params:datas
+            })
+            .then(function (response) {
+                const tmp_data = response.data.rest;
+                const len  = tmp_data.length; //データ数を取得
+                let tmp_lat = -1;
+                let tmp_lon = -1;
+                let tmp_name = "";
+
+                // console.log(tmp_data[0].name);
+                for( let i=0; i<len; i++){
+                    tmp_lat = tmp_data[i].latitude;
+                    tmp_lon = tmp_data[i].longitude;
+                    tmp_name = tmp_data[i].name;
+                    map.pin(tmp_lat,tmp_lon,"#ff0000");
+                    map.infoboxHtml(tmp_lat,tmp_lon,'<div style="color:red;font-size:5px">'+tmp_name+'</div>');
+                };
+            }).catch(function (error) {
+                console.log(error);//通信Error
+            }).then(function () {
+                //console.log("Last");//通信OK/Error後に処理を必ずさせたい場合
+            });
+         });
+    }
+
+    //*****************************************************
+    //ぐるなびデータ表示処理
+    //*****************************************************
+    function showData(data){
+        //データ確認用
+        console.log(data.rest);
+        console.log(data.rest[0].access.line);
+
+        const map = new Bmap("#myMap");
+
+        //データを繰り返し処理で取得
+        const len  = data.rest.length; //データ数を取得
+        for( let i=0; i<len; i++){
+            const qr = '<img src="'+data.rest[i].image_url.qrcode+'">';
+            // $("#table").append('<tr><td>' + data.rest[i].name + '</td><td>' + data.rest[i].opentime + qr + '</td></tr>');
+            $("#table").append('<tr><td>' + data.rest[i].name + '</td><td>' + data.rest[i].opentime + '</td></tr>');
+            // map.pin(data.rest[i].latitude,data.rest[i].longitude,"#ff0000");
+        };
+    }
+</script>
+</body>
+</html>
