@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="choose_page.php" method="GET" name="myform" style="text-align: center;margin-top: 150px;">
+        <input type="hidden" value="" name="page" />
+        <img src="img/create.png" onclick="sbm(0);" >
+        <img src="img/import.png" onclick="sbm(1);" >
+    </form>
+
+    <script>
+        function sbm(tmp_val){
+            document.myform.page.value = tmp_val;
+            document.myform.submit();
+        }
+    </script>
+</body>
+</html>
