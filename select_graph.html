@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>作成するグラフを選択してください</p>
+    <form action="get_select.php" method="POST" name="myform">
+        <!-- <input type="image" src="img/example1.png" name="ttt1" value="1">
+        <input type="image" src="img/example26.1.png" name="ttt2" value="2"> -->
+        <!-- <input type="image" src="img/bargradex4.png" value="3" name="ttt3"> -->
+        <input type="hidden" value="fuga" name="h" />
+        <img src="img/example1.png"    onclick="sbm(1);" >
+        <img src="img/example26.1.png" onclick="sbm(2);" >
+        <img src="img/bargradex4.png"  onclick="sbm(3);" >
+
+        <!-- <input type="submit" name="ttt" value="3"> -->
+    </form>
+
+    <script>
+        function sbm(tmp_val){
+            document.myform.h.value = tmp_val;
+            document.myform.submit();
+        }
+    </script>
+</body>
+</html>
